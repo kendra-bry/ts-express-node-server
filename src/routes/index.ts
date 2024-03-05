@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import * as contactRoute from './contact';
+import * as contactRoute from './contacts';
 
 const router = Router();
 
-router.use(contactRoute.default);
+router.use('/contacts', contactRoute.default);
 
 export default router;
