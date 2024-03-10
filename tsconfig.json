@@ -1,13 +1,30 @@
 {
   "compilerOptions": {
+    // Target ECMAScript 2015 (ES6) for generated JavaScript code
     "target": "es6",
+
+    // Use CommonJS module system for generated JavaScript code
     "module": "commonjs",
+
+    // Output directory for compiled TypeScript files
     "outDir": "./dist",
+
+    // Enable strict type-checking options to catch common errors
     "strict": true,
+
+    // Enable compatibility with ECMAScript module syntax and CommonJS interoperation
     "esModuleInterop": true,
+
+    // Skip type-checking of declaration files to improve compilation speed
     "skipLibCheck": true,
+
+    // Force consistent casing in file names for cross-platform consistency
     "forceConsistentCasingInFileNames": true
   },
+
+  // Include TypeScript files from the "src" directory and its subdirectories
   "include": ["src/**/*.ts"],
+
+  // Exclude the "node_modules" directory from the compilation process
   "exclude": ["node_modules"]
 }

@@ -23,7 +23,9 @@
     "phone": "555-5678",
     "email": "jane.smith@example.com",
     "friends": [
-      3
+      3,
+      4,
+      1
     ],
     "address": {
       "street": "456 Oak St",

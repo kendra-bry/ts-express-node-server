@@ -7,6 +7,50 @@ import { fetchContactsById } from '../helpers/helpers';
 const router = Router();
 const filePath = path.join(__dirname, '../', 'data', 'contacts.json');
 
+// POST endpoint to add a new contact
+router.post('/', (req: Request, res: Response) => {
+  const newContact: Contact = req.body;
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
+    if (err) {
+      console.error(err);
+      throw new Error('Error reading JSON file');
+    }
+
+    const contacts: Contact[] = JSON.parse(data);
+
+    // Generate a new id for the contact
+    const newId =
+      contacts.length > 0
+        ? Math.max(...contacts.map((contact) => contact.id)) + 1
+        : 1;
+
+    // Assign the new id to the contact
+    newContact.id = newId;
+
+    // Add the new contact to the contacts array
+    contacts.push(newContact);
+
+    // Write the updated contacts back to the JSON file
+    fs.writeFile(
+      filePath,
+      JSON.stringify(contacts, null, 2),
+      'utf8',
+      (writeErr) => {
+        // Handle any errors writing the file
+        if (writeErr) {
+          console.error(writeErr);
+          throw new Error('Error writing to JSON file');
+        }
+
+        // Respond with the newly added contact
+        res.json(newContact);
+      },
+    );
+  });
+});
+
 // GET endpoint to fetch all contacts
 router.get('/', (req: Request, res: Response) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -90,50 +134,6 @@ router.put('/:id', (req: Request, res: Response) => {
 
         // Respond with the updated contact
         res.json(contacts[contactIndex]);
-      },
-    );
-  });
-});
-
-// POST endpoint to add a new contact
-router.post('/', (req: Request, res: Response) => {
-  const newContact: Contact = req.body;
-
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    // Handle any errors reading the file
-    if (err) {
-      console.error(err);
-      throw new Error('Error reading JSON file');
-    }
-
-    const contacts: Contact[] = JSON.parse(data);
-
-    // Generate a new id for the contact
-    const newId =
-      contacts.length > 0
-        ? Math.max(...contacts.map((contact) => contact.id)) + 1
-        : 1;
-
-    // Assign the new id to the contact
-    newContact.id = newId;
-
-    // Add the new contact to the contacts array
-    contacts.push(newContact);
-
-    // Write the updated contacts back to the JSON file
-    fs.writeFile(
-      filePath,
-      JSON.stringify(contacts, null, 2),
-      'utf8',
-      (writeErr) => {
-        // Handle any errors writing the file
-        if (writeErr) {
-          console.error(writeErr);
-          throw new Error('Error writing to JSON file');
-        }
-
-        // Respond with the newly added contact
-        res.json(newContact);
       },
     );
   });
