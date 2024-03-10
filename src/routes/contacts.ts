@@ -2,16 +2,42 @@ import { Request, Response, Router } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Contact } from '../types';
+import { fetchContactsById } from '../helpers/helpers';
 
 const router = Router();
 const filePath = path.join(__dirname, '../', 'data', 'contacts.json');
 
+// GET endpoint to fetch a specific contact and their friends by ID
+router.get('/:id', (req: Request, res: Response) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
+    if (err) {
+      console.error(err);
+      throw new Error('Error reading JSON file');
+    }
+
+    const contacts: Contact[] = JSON.parse(data);
+    const requestedId: number = parseInt(req.params.id);
+
+    // Use recursion to fetch contacts by ID
+    const requestedContacts = fetchContactsById(contacts, requestedId);
+
+    if (requestedContacts.length === 0) {
+      res.status(404).json({ error: 'Contact not found' });
+      return;
+    }
+
+    res.json(requestedContacts);
+  });
+});
+
+// GET endpoint to fetch all contacts
 router.get('/', (req: Request, res: Response) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
     if (err) {
-      console.error('Error reading JSON file:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-      return;
+      console.error(err);
+      throw new Error('Error reading JSON file');
     }
 
     // Parse the JSON data
@@ -22,15 +48,16 @@ router.get('/', (req: Request, res: Response) => {
   });
 });
 
+// PUT endpoint to update a contact by ID
 router.put('/:id', (req: Request, res: Response) => {
   const idToUpdate: number = parseInt(req.params.id);
   const updatedContact: Contact = req.body;
 
   fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
     if (err) {
-      console.error('Error reading JSON file:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-      return;
+      console.error(err);
+      throw new Error('Error reading JSON file');
     }
 
     const contacts: Contact[] = JSON.parse(data);
@@ -55,10 +82,10 @@ router.put('/:id', (req: Request, res: Response) => {
       JSON.stringify(contacts, null, 2),
       'utf8',
       (writeErr) => {
+        // Handle any errors writing the file
         if (writeErr) {
-          console.error('Error writing to JSON file:', writeErr);
-          res.status(500).json({ error: 'Internal Server Error' });
-          return;
+          console.error(writeErr);
+          throw new Error('Error writing to JSON file');
         }
 
         // Respond with the updated contact
@@ -68,14 +95,15 @@ router.put('/:id', (req: Request, res: Response) => {
   });
 });
 
+// POST endpoint to add a new contact
 router.post('/', (req: Request, res: Response) => {
   const newContact: Contact = req.body;
 
   fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
     if (err) {
-      console.error('Error reading JSON file:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-      return;
+      console.error(err);
+      throw new Error('Error reading JSON file');
     }
 
     const contacts: Contact[] = JSON.parse(data);
@@ -98,10 +126,10 @@ router.post('/', (req: Request, res: Response) => {
       JSON.stringify(contacts, null, 2),
       'utf8',
       (writeErr) => {
+        // Handle any errors writing the file
         if (writeErr) {
-          console.error('Error writing to JSON file:', writeErr);
-          res.status(500).json({ error: 'Internal Server Error' });
-          return;
+          console.error(writeErr);
+          throw new Error('Error writing to JSON file');
         }
 
         // Respond with the newly added contact
@@ -111,14 +139,15 @@ router.post('/', (req: Request, res: Response) => {
   });
 });
 
+// DELETE endpoint to delete a contact by ID
 router.delete('/:id', (req: Request, res: Response) => {
   const idToDelete: number = parseInt(req.params.id);
 
   fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
     if (err) {
-      console.error('Error reading JSON file:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-      return;
+      console.error(err);
+      throw new Error('Error reading JSON file');
     }
 
     const contacts: Contact[] = JSON.parse(data);
@@ -143,10 +172,10 @@ router.delete('/:id', (req: Request, res: Response) => {
       JSON.stringify(contacts, null, 2),
       'utf8',
       (writeErr) => {
+        // Handle any errors writing the file
         if (writeErr) {
-          console.error('Error writing to JSON file:', writeErr);
-          res.status(500).json({ error: 'Internal Server Error' });
-          return;
+          console.error(writeErr);
+          throw new Error('Error writing to JSON file');
         }
 
         // Respond with the deleted contact

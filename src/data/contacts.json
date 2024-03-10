@@ -4,34 +4,39 @@
     "firstName": "John",
     "lastName": "Doe",
     "phone": "555-1234",
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "friends": [2, 3]
   },
   {
     "id": 2,
     "firstName": "Jada",
     "lastName": "Smith",
     "phone": "555-5678",
-    "email": "jada.smith@example.com"
+    "email": "jada.smith@example.com",
+    "friends": [1, 4]
   },
   {
     "id": 3,
     "firstName": "Bob",
     "lastName": "Johnson",
     "phone": "555-8765",
-    "email": "bob.johnson@example.com"
+    "email": "bob.johnson@example.com",
+    "friends": [1, 5]
   },
   {
     "id": 4,
     "firstName": "Alice",
     "lastName": "Williams",
     "phone": "555-4321",
-    "email": "alice.williams@example.com"
+    "email": "alice.williams@example.com",
+    "friends": [2]
   },
   {
     "id": 5,
     "firstName": "Charlie",
     "lastName": "Brown",
     "phone": "555-9876",
-    "email": "charlie.brown@example.com"
+    "email": "charlie.brown@example.com",
+    "friends": [3]
   }
 ]
