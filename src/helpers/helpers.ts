@@ -1,4 +1,4 @@
-import { Contact } from "../types";
+import { Contact } from '../types';
 
 /**
  * Recursively fetch contacts and their friends by ID.

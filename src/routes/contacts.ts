@@ -7,6 +7,23 @@ import { fetchContactsById } from '../helpers/helpers';
 const router = Router();
 const filePath = path.join(__dirname, '../', 'data', 'contacts.json');
 
+// GET endpoint to fetch all contacts
+router.get('/', (req: Request, res: Response) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    // Handle any errors reading the file
+    if (err) {
+      console.error(err);
+      throw new Error('Error reading JSON file');
+    }
+
+    // Parse the JSON data
+    const contacts: Contact[] = JSON.parse(data);
+
+    // Send the contacts as a response
+    res.json(contacts);
+  });
+});
+
 // GET endpoint to fetch a specific contact and their friends by ID
 router.get('/:id', (req: Request, res: Response) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -28,23 +45,6 @@ router.get('/:id', (req: Request, res: Response) => {
     }
 
     res.json(requestedContacts);
-  });
-});
-
-// GET endpoint to fetch all contacts
-router.get('/', (req: Request, res: Response) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    // Handle any errors reading the file
-    if (err) {
-      console.error(err);
-      throw new Error('Error reading JSON file');
-    }
-
-    // Parse the JSON data
-    const contacts: Contact[] = JSON.parse(data);
-
-    // Send the contacts as a response
-    res.json(contacts);
   });
 });
 
